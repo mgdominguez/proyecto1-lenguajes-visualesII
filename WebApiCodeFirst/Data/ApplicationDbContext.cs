@@ -12,5 +12,7 @@ namespace WebApiCodeFirst.Data
 
         //agregar las entidades
         public DbSet<Categoria> categoria { get; set; }
+
+        public DbSet<Usuario> usuario { get; set; }
     }
 }
