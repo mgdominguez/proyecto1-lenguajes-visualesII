@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebApiCodeFirst.Data;
 using WebApiCodeFirst.Mappers;
 using WebApiCodeFirst.Repositorios;
@@ -21,6 +24,29 @@ builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 //Agregar el AutoMapper
 builder.Services.AddAutoMapper(typeof(ApiMapper));
 
+var key = builder.Configuration.GetValue<string>("ApiSettings:Secreta");
+
+//Aquí se configura la Autenticación
+builder.Services.AddAuthentication
+    (
+        x =>
+        {
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }
+    ).AddJwtBearer(x =>
+    {
+        x.RequireHttpsMetadata = false;
+        x.SaveToken = true;
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -37,6 +63,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();//Habilitar Autenticacion
 app.UseAuthorization();
 
 app.MapControllers();

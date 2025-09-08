@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApiCodeFirst.Mappers;
 using WebApiCodeFirst.Models;
@@ -10,6 +11,7 @@ using WebApiCodeFirst.Repositorios.IRepositorios;
 namespace WebApiCodeFirst.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CategoriasController : ControllerBase
     {
@@ -24,6 +26,7 @@ namespace WebApiCodeFirst.Controllers
 
         // GET: api/<CategoriasController>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetCategorias()
         {
             var categorias = _categoriaRepositorio.GetCategorias();
@@ -39,6 +42,7 @@ namespace WebApiCodeFirst.Controllers
 
         // GET api/<CategoriasController>/5
         [HttpGet("{categoriaId}", Name = "GetCategoria")]
+        [AllowAnonymous]
         public IActionResult GetCategoria(int categoriaId)
         {
             var itemCategoria = _categoriaRepositorio.GetCategoria(categoriaId);
