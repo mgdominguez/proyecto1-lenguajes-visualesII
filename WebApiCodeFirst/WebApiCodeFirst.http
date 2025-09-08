@@ -1,6 +1,10 @@
 @WebApiCodeFirst_HostAddress = http://localhost:5258
 
-GET {{WebApiCodeFirst_HostAddress}}/weatherforecast/
+GET {{WebApiCodeFirst_HostAddress}}/api/Categorias
 Accept: application/json
-
 ###
+### Get Categorias by ID
+GET {{WebApiCodeFirst_HostAddress}}/api/Categorias/1
+Accept: application/json
+###
+ 

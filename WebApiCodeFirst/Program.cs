@@ -20,6 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 
 //Agregar los repositorios al container
 builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
+builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 
 //Agregar el AutoMapper
 builder.Services.AddAutoMapper(typeof(ApiMapper));
