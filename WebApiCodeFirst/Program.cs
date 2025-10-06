@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using WebApiCodeFirst.Data;
 using WebApiCodeFirst.Mappers;
+using WebApiCodeFirst.Models;
 using WebApiCodeFirst.Repositorios;
 using WebApiCodeFirst.Repositorios.IRepositorios;
 
@@ -17,6 +20,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(
         builder.Configuration.GetConnectionString("ConexionSql")
     )
 );
+
+//Agregar el servicio de Identity al container
+builder.Services.AddIdentity<AppUsuario, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 //Agregar los repositorios al container
 builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
@@ -51,7 +58,38 @@ builder.Services.AddAuthentication
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+//Configuración de Swagger para JWT
+builder.Services.AddSwaggerGen((options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description =
+        "Autenticación JWT usando el esquema Bearer. \r\n\r\n " +
+        "Ingresa la palabra 'Bearer' seguido de un [espacio] y después su token en el campo de abajo.\r\n\r\n" +
+        "Ejemplo: \"Bearer tkljk125jhhk\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+}));
 
 var app = builder.Build();
 
