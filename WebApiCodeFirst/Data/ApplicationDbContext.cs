@@ -22,5 +22,7 @@ namespace WebApiCodeFirst.Data
         public DbSet<Usuario> usuario { get; set; }
 
         public DbSet<AppUsuario> appUsuarios { get; set; }
+
+        public DbSet<Pelicula> pelicula { get; set; }
     }
 }
