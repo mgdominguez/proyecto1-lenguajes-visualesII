@@ -11,6 +11,7 @@ namespace WebApiCodeFirst.Mappers
             CreateMap<Categoria, CategoriaDTO>().ReverseMap();
             CreateMap<Categoria, CrearCategoriaDTO>().ReverseMap();
             CreateMap<Usuario, UsuarioDto>().ReverseMap();
+            CreateMap<AppUsuario, UsuarioDatosDto>().ReverseMap();
         }
     }
 }

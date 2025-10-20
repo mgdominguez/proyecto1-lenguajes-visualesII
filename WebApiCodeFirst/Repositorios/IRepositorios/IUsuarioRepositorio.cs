@@ -13,6 +13,6 @@ namespace WebApiCodeFirst.Repositorios.IRepositorios
 
         Task<UsuarioLoginRespuestaDto> Login(UsuarioLoginDto usuarioLoginDto);
 
-        Task<Usuario> Registro(UsuarioRegistroDto usuarioRegistroDto);
+        Task<UsuarioDatosDto> Registro(UsuarioRegistroDto usuarioRegistroDto);
     }
 }

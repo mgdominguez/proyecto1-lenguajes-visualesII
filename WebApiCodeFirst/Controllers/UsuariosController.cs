@@ -71,7 +71,7 @@ namespace WebApiCodeFirst.Controllers
             }
 
             var usuario = await _usRepo.Registro(usuarioRegistroDto);
-            if (usuario == null)
+            if (usuario.ID == null)
             {
                 _respuestaApi.StatusCode = HttpStatusCode.BadRequest;
                 _respuestaApi.IsSuccess = false;
