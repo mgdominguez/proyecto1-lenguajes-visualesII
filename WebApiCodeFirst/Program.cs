@@ -28,6 +28,7 @@ builder.Services.AddIdentity<AppUsuario, IdentityRole>()
 //Agregar los repositorios al container
 builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+builder.Services.AddScoped<IPeliculaRepositorio, PeliculaRepositorio>();
 
 //Agregar el AutoMapper
 builder.Services.AddAutoMapper(typeof(ApiMapper));
