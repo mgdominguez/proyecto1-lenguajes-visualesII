@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using WebApiCodeFirst.Data;
 using WebApiCodeFirst.Mappers;
+using WebApiCodeFirst.Middleware;
 using WebApiCodeFirst.Models;
 using WebApiCodeFirst.Repositorios;
 using WebApiCodeFirst.Repositorios.IRepositorios;
@@ -17,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 //Agregar la conexion a la base de datos al container
 builder.Services.AddDbContext<ApplicationDbContext>(
     opciones => opciones.UseSqlServer(
-        builder.Configuration.GetConnectionString("ConexionSql")
+        builder.Configuration.GetConnectionString("ConexionSqlDesarrollo")
     )
 );
 
@@ -29,6 +30,7 @@ builder.Services.AddIdentity<AppUsuario, IdentityRole>()
 builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 builder.Services.AddScoped<IPeliculaRepositorio, PeliculaRepositorio>();
+builder.Services.AddScoped<ILogApiRepositorio, LogApiRepositorio>();
 
 //Agregar el AutoMapper
 builder.Services.AddAutoMapper(typeof(ApiMapper));
@@ -102,6 +104,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
 app.UseAuthentication();//Habilitar Autenticacion
 app.UseAuthorization();
